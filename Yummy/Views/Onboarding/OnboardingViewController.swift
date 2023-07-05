@@ -19,6 +19,8 @@ class OnboardingViewController: UIViewController {
     
     var currentPage = 0 {
         didSet {
+            pageControl.currentPage = currentPage
+
             if currentPage == slides.count - 1 {
                 nextButton.setTitle("Get Started", for: .normal)
             }else {
@@ -42,7 +44,17 @@ class OnboardingViewController: UIViewController {
     }
     
     @IBAction func nextBtnClicked(_ sender: UIButton) {
-        
+        if currentPage == slides.count - 1 {
+            let controller = storyboard?.instantiateViewController(withIdentifier: "homeNC") as! UINavigationController
+            controller.modalPresentationStyle = .fullScreen
+            controller.modalTransitionStyle = .flipHorizontal
+            present(controller, animated: true, completion: nil)
+        }else {
+            currentPage += 1
+            let indexpath = IndexPath(item: currentPage, section: 0)
+            CollectionView.scrollToItem(at: indexpath, at: .centeredHorizontally, animated: true)
+        }
+     
         
     }
     
